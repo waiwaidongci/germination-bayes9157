@@ -2,7 +2,7 @@ from .eb_algorithm import fit_hyperparameters,validate_counts
 from .posterior_algorithm import posterior_prediction
 from ..utils.fingerprint import fingerprint
 VERSION='bounded-multistart-betabinomial-eb-v1'
-def prepare_snapshot(snapshot):
+def prepare_snapshot(snapshot,require_study=True):
     lots=sorted(snapshot['lots'],key=lambda l:l['code']);counts=snapshot['counts']
     if len({x['id'] for x in lots})!=len(lots) or len({x['code'] for x in lots})!=len(lots):raise ValueError("批次身份或编号重复")
     by_lot={}
@@ -10,7 +10,7 @@ def prepare_snapshot(snapshot):
         if c['lot_id'] in by_lot:raise ValueError("每批只允许一条计数")
         by_lot[c['lot_id']]=c
     if set(by_lot)!=set(l['id'] for l in lots):raise ValueError("批次与计数必须一一对应，不能缺失或未知")
-    ordered=[by_lot[l['id']] for l in lots];n=[c['n'] for c in ordered];k=[c['k'] for c in ordered];validate_counts(n,k)
+    ordered=[by_lot[l['id']] for l in lots];n=[c['n'] for c in ordered];k=[c['k'] for c in ordered];validate_counts(n,k,require_study)
     return lots,ordered,n,k
 
 def analyze_germination(snapshot,threshold=.7,future_n=50):

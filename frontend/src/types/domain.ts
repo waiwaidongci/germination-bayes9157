@@ -9,3 +9,7 @@ export interface Result{algorithm_version:string;study:Study;fit:Fit;lots:LotRes
 export interface Run{id:number;name:string;study_id:number;threshold:number;future_n:number;status:'queued'|'running'|'completed'|'failed';result:Result;error:string;owner:string;created_at:string}
 export interface Note{id:number;run_id:number;title:string;interpretation:string;proposal:string;status:'submitted'|'approved'|'rejected';owner:string;reviewer:string;review_note:string;created_at:string}
 export interface Audit{id:number;actor:string;action:string;target:string;created_at:string}
+
+export interface DPBudget{total:number;spent:number;remaining:number}
+export interface DPRelease{release_id:string;share_token:string;shared_path:string;study_code:string;source:string;epsilon:number;sensitivity:number;mechanism:string;noise_scale:number;noisy_mean:number;created_at:string;budget:DPBudget;statistic:string;neighbor:string;bound:string;note:string;study_id?:number;created_by?:string;snapshot_hash?:string;request_fingerprint?:string;version?:string}
+export interface DPBudgetRow extends DPBudget{source:string;releases:number}
